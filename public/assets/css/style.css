@@ -1,19 +1,18 @@
-li {
-  padding: 5px;
-  margin: 5px;
-  background: #faebd7;
+.section {
+  background-image: url('../images/notePickr-background.jpg');
+  /* height: 450px; */
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
-
-.label {
-  font-weight: bold;
+.magnifying-glass {
+  width:40%;
+  margin-left: 60%;
 }
-
-.create-update-form {
-  padding: 5px;
-  margin: 5px;
-  background: aqua;
+.btn, .btn-large, .btn-small {
+  text-decoration: none;
+  color: #fff;
+  background-color: #0076a3;
 }
-
-.form-group {
-  margin-bottom: 5px;
+.btn:hover, .btn-large:hover {
+  background-color: #3895b8;
 }
