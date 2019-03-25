@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="">
-        <img class="magnifying-glass" src="assets/images/glass.png" />
+        <img class="magnifying-glass" id="magGlass" src="assets/images/glass.png" />
       </div>
     </div>
   </div>
@@ -14,7 +14,7 @@
   <div class="row">
     <div class="col s12 m12 center">
       {{!-- div for the scraping button and completion message --}}
-      <a class="waves-effect waves-light btn-large">
+      <a id="scrapeArticles" class="waves-effect waves-light btn-large">
         <i class="material-icons left">search</i>Scrape for new articles</a>
 
 
@@ -22,18 +22,19 @@
   </div>
 
   {{!-- Handlebars will handle the dynamic part of this row --}}
+  {{#each dbArticle}}
   <div class="row article-row">
-    <div class="articles col s12 m8">
+    <div class="articles col s12 m9">
       {{!-- Articles are generated here --}}
       <div class="row">
-        <div class="col s12 m3">
+        <div class="col s12">
           {{!-- this is the image of the article --}}
-          <img class="test-img card-image" src="assets/images/test-cat.jpg" />
+          <img class="article-img"  src={{artimage}} />
         </div>
-        <div class="col s12 m9">
+        <div class="col s12">
           {{!-- this is where the body copy will be haz --}}
-          <h2>title</h2>
-          <p class="lead">Leadin sentences</p>
+          <h2><a href="{{link}}" target="_blank">{{title}}</a></h2>
+          <p class="lead">{{altinfo}}</p>
           {{!-- Here are all the functional buttons --}}
           <a class="waves-effect waves-light btn-small">
             <i class="material-icons left">book</i>READ</a>
@@ -41,8 +42,7 @@
           <a class="waves-effect waves-light btn-small">
             <i class="material-icons left">book</i>UNREAD</a>
 
-          <a class="waves-effect waves-light btn-small">
-            <i class="material-icons left">delete</i>DELETE</a>
+          
 
 
         </div>
@@ -51,9 +51,21 @@
       <div class="article-img"></div>
       <div class="article-content"></div>
     </div>
-    <div class="notes col s12 m4">
-      {{!-- Notes are generated here --}}
-      <div class="note-content"></div>
+    <div class="notes col s12 m3 input-field">
+      <textarea id="textarea{{_id}}" class="materialize-textarea">{{note.body}}</textarea>
+          <label for="textarea{{_id}}">Article Notes:</label>
+          <a class="waves-effect waves-light btn-small" onclick="globalClick('{{_id}}')">
+            <i class="material-icons left">delete</i>DELETE NOTE</a>
+            <a class="waves-effect waves-light btn-small saveBtn" onclick="globalClick('{{_id}}', textarea{{_id}}.value)">
+            <i class="material-icons left">save</i>SAVE NOTE</a>
+
     </div>
   </div>
+  <hr class="betweenArticles">
+  {{/each}}
+  
+  
 </div>
+<script>
+  
+</script>

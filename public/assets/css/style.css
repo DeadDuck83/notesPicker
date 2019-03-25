@@ -6,7 +6,7 @@
 }
 .magnifying-glass {
   width:40%;
-  margin-left: 60%;
+  
 }
 .btn, .btn-large, .btn-small {
   text-decoration: none;
@@ -15,4 +15,37 @@
 }
 .btn:hover, .btn-large:hover {
   background-color: #3895b8;
+}
+.article-img {
+  max-width:100%;
+}
+#magGlass {
+  animation-duration: 6s;
+  margin-left: 60%;
+  /* animation-delay: 2s; */
+}
+.test-animation {
+  /* animation-delay: 2s; */
+  animation-name: magGlassAnimation;
+
+}
+h2 {
+  margin-top: 0;
+}
+
+.betweenArticles {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  margin-bottom: 30px;
+}
+
+
+@keyframes magGlassAnimation {
+  0%   {margin-left:60%;}
+  20%  {margin-left:0%;}
+  40%  {margin-left:45%;}
+  60% {margin-left:10%;}
+  80% {margin-left:60%;}
+  100% {margin-left:60%;}
 }

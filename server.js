@@ -1,14 +1,14 @@
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
+const express = require("express");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
-var db = require("./models");
+const db = require("./models");
 
-var PORT = 3000;
+const PORT = 3000;
 
-var app = express();
+const app = express();
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 
 // Set Handlebars.
-var exphbs = require("express-handlebars");
+const exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -39,42 +39,44 @@ app.get("/", function (req, res) {
 });
 
 app.get("/scrape", function (req, res) {
+    console.log("scraping");
     // First, we grab the body of the html with axios
-    axios.get("http://www.echojs.com/").then(function (response) {
+    axios.get("https://www.webdesignerdepot.com/").then(function (response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
-        var $ = cheerio.load(response.data);
+        const $ = cheerio.load(response.data);
+        // db.Article.deleteMany({}, function(){});
 
         // Now, we grab every h2 within an article tag, and do the following:
-        $("article").each(function (i, element) {
+        $(".article-hp-content").each(function (i, element) {
 
             // Save an empty result object
-            var result = {};
+            const result = {};
 
-            var title = $(this).children("h2");
-            var altInfo = $(this).children("p");
+            const image = $(this).children("a");
+            const title = $(this).children("div .main-col-post-info").children("div .main-col-post-info-content");
 
-            // Add the text and href of every link, and save them as properties of the result object
             result.title = title
+                .children("h2")
                 .children("a")
                 .text();
+
+            result.artimage = image
+                 .children("img")
+                .attr('src');
+
             result.link = title
+                .children("h2")
                 .children("a")
                 .attr("href");
 
-            result.author = altInfo
-                .children("username")
-                .children("a")
-                .text();
+            result.altinfo = title
+                .children("div .hp-excerpt")
+                .text().trim();
 
-            // Create a new Article using the `result` object built from scraping
             db.Article.create(result)
                 .then(function (dbArticle) {
-                    // View the added result in the console
-                    console.log(dbArticle);
                 })
                 .catch(function (err) {
-                    // If an error occurred, log it
-                    console.log(err);
                 });
         });
 
@@ -87,18 +89,22 @@ app.get("/scrape", function (req, res) {
 app.get("/debug", function (req, res) {
     db.Article.find({})
         .then(function (dbArticle) {
-            console.log(JSON.stringify(dbArticle, null, 4));
+            res.json(dbArticle);
         })
         .catch(function (err) {
         });
 });
 // Route for getting all Articles from the db
 app.get("/articles", function (req, res) {
+
     // Grab every document in the Articles collection
     db.Article.find({})
+        .populate("note")
         .then(function (dbArticle) {
+            console.log("dbArticle");
+            console.log(dbArticle);
             // If we were able to successfully find Articles, send them back to the client
-            res.json(dbArticle);
+            res.render("index", {dbArticle : dbArticle});
         })
         .catch(function (err) {
             // If an error occurred, send it to the client
