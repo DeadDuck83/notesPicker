@@ -31,7 +31,11 @@ app.set("view engine", "handlebars");
 // app.use(routes);
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/notesPicker", { useNewUrlParser: true });
+//mongoose.connect("mongodb://localhost/notesPicker", { useNewUrlParser: true });
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/notesPicker";
+
+mongoose.connect(MONGODB_URI);
 
 // Create all our routes and set up logic within those routes where required.
 app.get("/", function (req, res) {
