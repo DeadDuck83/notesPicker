@@ -1,5 +1,5 @@
 const express = require("express");
-const logger = require("morgan");
+// const logger = require("morgan");
 const mongoose = require("mongoose");
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Use morgan logger for logging requests
-app.use(logger("dev"));
+// app.use(logger("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -33,9 +33,9 @@ app.set("view engine", "handlebars");
 // Connect to the Mongo DB
 //mongoose.connect("mongodb://localhost/notesPicker", { useNewUrlParser: true });
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/notesPicker";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/notesPicker";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Create all our routes and set up logic within those routes where required.
 app.get("/", function (req, res) {
